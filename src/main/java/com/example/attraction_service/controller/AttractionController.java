@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/attraction")
@@ -23,7 +21,7 @@ public class AttractionController {
     @PostMapping("/add")
     ResponseEntity<Void> addAttraction(@RequestBody AttractionDto attractionDto) {
         attractionService.addAttraction(attractionDto);
-        return new ResponseEntity<>(CREATED);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/list")

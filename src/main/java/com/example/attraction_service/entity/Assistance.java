@@ -17,6 +17,7 @@ public class Assistance {
     private Long id;
 
     @Column(name = "assistance_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private AssistanceType assistanceType;
 
     @Column(name = "description")
@@ -25,7 +26,6 @@ public class Assistance {
     @Column(name = "executor")
     private String executor;
 
-    @ManyToMany
-    @JoinTable(name = "attraction_assistance")
+    @ManyToMany(mappedBy = "assistances")
     private List<Attraction> attractions;
 }

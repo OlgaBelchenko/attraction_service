@@ -22,7 +22,7 @@ public class Locality {
     @Column(name = "region")
     private String region;
 
-    @OneToMany
+    @OneToMany(mappedBy = "locality")
     private List<Attraction> attractions;
 
 }

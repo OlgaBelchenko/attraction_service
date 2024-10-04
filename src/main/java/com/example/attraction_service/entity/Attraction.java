@@ -28,6 +28,7 @@ public class Attraction {
     private String description;
 
     @Column(name = "attraction_type")
+    @Enumerated(EnumType.STRING)
     private AttractionType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,6 +36,10 @@ public class Attraction {
     private Locality locality;
 
     @ManyToMany
-    @JoinTable(name = "attraction_assistance")
+    @JoinTable(
+            name = "assistance_attraction",
+            joinColumns = @JoinColumn(name = "attraction_id"),
+            inverseJoinColumns = @JoinColumn(name = "assistance_id")
+    )
     private List<Assistance> assistances;
 }
