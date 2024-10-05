@@ -1,7 +1,6 @@
 package com.example.attraction_service.controller;
 
 import com.example.attraction_service.dto.AttractionDto;
-import com.example.attraction_service.dto.AttractionsRequest;
 import com.example.attraction_service.dto.LocalityDto;
 import com.example.attraction_service.service.AttractionService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +24,10 @@ public class AttractionController {
     }
 
     @GetMapping("/list")
-    ResponseEntity<List<AttractionDto>> getAllAttractions(@RequestBody AttractionsRequest attractionsRequest) {
-        return ResponseEntity.ok(attractionService.getAllAttractions(attractionsRequest));
+    ResponseEntity<List<AttractionDto>> getAllAttractions(
+            @RequestParam("sort") boolean sortByName,
+            @RequestParam("attractionTypeName") String attractionTypeName) {
+        return ResponseEntity.ok(attractionService.getAllAttractions(sortByName, attractionTypeName));
     }
 
 

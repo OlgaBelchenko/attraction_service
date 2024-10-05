@@ -12,7 +12,8 @@ CREATE TABLE locality
 (
     id     BIGINT PRIMARY KEY NOT NULL,
     name   VARCHAR(50)        NOT NULL,
-    region VARCHAR(50)
+    region VARCHAR(50) NOT NULL,
+    UNIQUE (name, region)
 );
 
 -- Таблица attraction

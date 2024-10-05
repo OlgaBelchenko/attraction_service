@@ -1,4 +1,4 @@
-package com.example.attraction_service.controller.advice;
+package com.example.attraction_service.advice;
 
 import com.example.attraction_service.dto.ErrorResponse;
 import com.example.attraction_service.exception.NoSuchAttractionException;

@@ -6,6 +6,9 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "region"})
+})
 @Getter
 @Setter
 @AllArgsConstructor

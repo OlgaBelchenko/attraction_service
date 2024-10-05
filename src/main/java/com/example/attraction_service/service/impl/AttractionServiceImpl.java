@@ -1,7 +1,6 @@
 package com.example.attraction_service.service.impl;
 
 import com.example.attraction_service.dto.AttractionDto;
-import com.example.attraction_service.dto.AttractionsRequest;
 import com.example.attraction_service.dto.LocalityDto;
 import com.example.attraction_service.entity.Attraction;
 import com.example.attraction_service.entity.AttractionType;
@@ -12,80 +11,79 @@ import com.example.attraction_service.exception.NoSuchLocalityException;
 import com.example.attraction_service.repository.AttractionRepository;
 import com.example.attraction_service.repository.LocalityRepository;
 import com.example.attraction_service.service.AttractionService;
-import com.example.attraction_service.utils.AttractionMapper;
-import com.example.attraction_service.utils.LocalityMapper;
+import com.example.attraction_service.utils.mapper.AttractionMapper;
+import com.example.attraction_service.utils.mapper.LocalityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 
+import static com.example.attraction_service.utils.DefaultErrorMessages.*;
+
 @Service
 @RequiredArgsConstructor
 public class AttractionServiceImpl implements AttractionService {
 
     private final AttractionRepository attractionRepository;
-    private final AttractionMapper attractionMapper;
     private final LocalityRepository localityRepository;
-    private final LocalityMapper localityMapper;
-
 
     @Override
     public void addAttraction(AttractionDto attractionDto) {
-        Attraction attraction = attractionMapper.mapToAttraction(attractionDto);
+        Attraction attraction = AttractionMapper.mapToAttraction(attractionDto);
         if (attractionRepository.existsByName(attraction.getName())) return;
         attractionRepository.save(attraction);
     }
 
     @Override
-    public List<AttractionDto> getAllAttractions(AttractionsRequest attractionsRequest) {
+    public List<AttractionDto> getAllAttractions(boolean sortByName, String attractionTypeName) {
         List<Attraction> attractions = attractionRepository.findAll();
 
         if (!attractions.isEmpty()) {
-            if (attractionsRequest.sortByName()) {
+            if (sortByName) {
                 attractions.sort(Comparator.comparing(Attraction::getName));
             }
 
-            if (attractionsRequest.attractionType() != null) {
+            if (attractionTypeName != null) {
                 try {
-                    AttractionType attractionType = AttractionType.valueOf(attractionsRequest.attractionType());
+                    AttractionType attractionType = AttractionType.valueOf(attractionTypeName);
                     attractions = attractions.stream().filter(attr -> attr.getAttractionType().equals(attractionType)).toList();
                 } catch (IllegalArgumentException e) {
-                    throw new NoSuchAttractionTypeException("Тип достопримечательности " + attractionsRequest.attractionType() + " не существует!");
+                    throw new NoSuchAttractionTypeException(String.format(NO_SUCH_ATTRACTION_TYPE, attractionTypeName));
                 }
             }
         }
 
-        return attractions.stream().map(attractionMapper::mapToAttractionDto).toList();
+        return attractions.stream().map(AttractionMapper::mapToAttractionDto).toList();
     }
 
     @Override
     public List<AttractionDto> getAllLocalityAttractions(LocalityDto localityDto) {
-        Locality locality = localityMapper.mapToLocality(localityDto);
+        Locality locality = LocalityMapper.mapToLocality(localityDto);
         List<AttractionDto> attractionDtos;
         if (localityRepository.existsByName(locality.getName())) {
-            attractionDtos = attractionRepository.findByLocality(locality).stream().map(attractionMapper::mapToAttractionDto).toList();
+            attractionDtos = attractionRepository.findByLocality(locality).stream().map(AttractionMapper::mapToAttractionDto).toList();
         } else {
-            throw new NoSuchLocalityException("Достопримечательности с названием " + localityDto.name() + " не существует!");
+            throw new NoSuchLocalityException(String.format(NO_SUCH_LOCALITY, locality.getName()));
         }
         return attractionDtos;
     }
 
     @Override
     public void updateAttraction(AttractionDto attractionDto) {
-        Attraction attraction = attractionMapper.mapToAttraction(attractionDto);
+        Attraction attraction = AttractionMapper.mapToAttraction(attractionDto);
         if (attractionRepository.existsByName(attraction.getName())) {
             attractionRepository.save(attraction);
         } else {
-            throw new NoSuchAttractionException("Достопримечательности с названием " + attractionDto.name() + " не существует!");
+            throw new NoSuchAttractionException(String.format(NO_SUCH_ATTRACTION, attractionDto.name()));
         }
     }
 
     @Override
     public void deleteAttraction(AttractionDto attractionDto) {
-        Attraction attraction = attractionMapper.mapToAttraction(attractionDto);
+        Attraction attraction = AttractionMapper.mapToAttraction(attractionDto);
         if (attraction == null)
-            throw new NoSuchAttractionException("Достопримечательности с названием " + attractionDto.name() + " не существует!");
+            throw new NoSuchAttractionException(String.format(NO_SUCH_ATTRACTION, attractionDto.name()));
         attractionRepository.delete(attraction);
     }
 }
