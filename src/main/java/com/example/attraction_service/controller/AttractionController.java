@@ -29,6 +29,7 @@ public class AttractionController {
         return ResponseEntity.ok(attractionService.getAllAttractions(attractionsRequest));
     }
 
+
     @GetMapping("/list_by_locality")
     ResponseEntity<List<AttractionDto>> getAllLocalityAttractions(@RequestBody LocalityDto localityDto) {
         return ResponseEntity.ok(attractionService.getAllLocalityAttractions(localityDto));

@@ -29,7 +29,7 @@ public class Attraction {
 
     @Column(name = "attraction_type")
     @Enumerated(EnumType.STRING)
-    private AttractionType type;
+    private AttractionType attractionType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "locality_id")

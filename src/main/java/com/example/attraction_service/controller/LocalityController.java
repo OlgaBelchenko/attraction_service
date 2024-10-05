@@ -1,11 +1,14 @@
 package com.example.attraction_service.controller;
 
+import com.example.attraction_service.dto.AttractionDto;
 import com.example.attraction_service.dto.LocalityDto;
 import com.example.attraction_service.service.LocalityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
