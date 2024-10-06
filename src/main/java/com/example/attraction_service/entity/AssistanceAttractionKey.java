@@ -5,6 +5,10 @@ import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
 
+/**
+ * Составной первичный ключ для сущности {@link AssistanceAttraction}
+ */
+
 @Embeddable
 public class AssistanceAttractionKey implements Serializable {
 

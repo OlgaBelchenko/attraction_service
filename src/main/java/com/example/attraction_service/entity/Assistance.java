@@ -5,7 +5,22 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Сущность "Услуга" (Assistance).
+ * Это класс сущности, который представляет таблицу "assistance" в базе данных.
+ * <p>
+ * Класс содержит следующие поля:
+ * id - уникальный идентификатор услуги
+ * assistanceType - тип услуги {@link AssistanceType}
+ * description - краткое описание услуги
+ * executor - исполнитель услуги
+ * attractions - список достопримечательностей, связанных с этой услугой {@link Attraction}
+ */
+
 @Entity
+@Table(uniqueConstraints={
+        @UniqueConstraint(columnNames = {"assistance_type", "executor"})
+})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,7 +38,7 @@ public class Assistance {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "executor")
+    @Column(name = "executor", nullable = false)
     private String executor;
 
     @ManyToMany(mappedBy = "assistances")

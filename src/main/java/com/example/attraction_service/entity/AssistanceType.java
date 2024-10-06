@@ -1,14 +1,11 @@
 package com.example.attraction_service.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+/**
+ * Перечисляемый тип с возможными значениями типа услуги {@link Assistance}
+ */
 
-@Getter
-@AllArgsConstructor
 public enum AssistanceType {
-    GUIDE("Гид"),
-    AUTO_TOUR("Автоэкскурсия"),
-    CATERING("Питание");
-
-    private final String value;
+    GUIDE,
+    AUTO_TOUR,
+    CATERING
 }

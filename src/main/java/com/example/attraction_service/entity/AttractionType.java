@@ -1,16 +1,13 @@
 package com.example.attraction_service.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+/**
+ * Перечисляемый тип с возможными значениями типа достопримечательности {@link Attraction}
+ */
 
-@Getter
-@AllArgsConstructor
 public enum AttractionType {
-    CASTLE("Дворец"),
-    PARK("Парк"),
-    MUSEUM("Музей"),
-    RESERVE("Заповедник"),
-    ARCHAEOLOGICAL_SITE("Археологический объект");
-
-    private final String value;
+    CASTLE,
+    PARK,
+    MUSEUM,
+    RESERVE,
+    ARCHAEOLOGICAL_SITE
 }

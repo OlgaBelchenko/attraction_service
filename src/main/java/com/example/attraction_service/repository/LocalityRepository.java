@@ -4,7 +4,30 @@ import com.example.attraction_service.entity.Locality;
 import jdk.jfr.Registered;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
+/**
+ * Репозиторий для работы с сущностями {@link Locality}.
+ */
+
 @Registered
 public interface LocalityRepository extends JpaRepository<Locality, Long> {
-    boolean existsByName(String name);
+
+    /**
+     * Метод для проверки существования местоположения в базе данных с переданными названием и регионом.
+     *
+     * @param name - название местоположения для поиска в базе данных
+     * @param region - регион местоположения для поиска в базе данных
+     * @return возвращает true, если такое местоположение существует, false - если не существует
+     */
+    boolean existsByNameAndRegion(String name, String region);
+
+    /**
+     * Метод для проверки существования местоположения в базе данных с переданными названием и регионом.
+     *
+     * @param name - название местоположения для поиска в базе данных
+     * @param region - регион местоположения для поиска в базе данных
+     * @return возвращает true, если такое местоположение существует, false - если не существует
+     */
+    Optional<Locality> findByNameAndRegion(String name, String region);
 }

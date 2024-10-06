@@ -6,6 +6,20 @@ import lombok.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Сущность "Достопримечательность" (Attraction).
+ * Это класс сущности, который представляет таблицу attraction в базе данных.
+ * <p>
+ * Класс содержит следующие поля:
+ * id - уникальный идентификатор достопримечательности
+ * name - название достопримечательности (уникальное)
+ * created - дата появления достопримечательности
+ * description - краткое описание достопримечательности
+ * attractionType - тип достопримечательности {@link AttractionType}
+ * locality - местоположение достопримечательности {@link Locality}
+ * assistances - список услуг {@link Assistance}, связанных с этой достопримечательностью
+ */
+
 @Entity
 @Getter
 @Setter
@@ -17,7 +31,7 @@ public class Attraction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "created")
