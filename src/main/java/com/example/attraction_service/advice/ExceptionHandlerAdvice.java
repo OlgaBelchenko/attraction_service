@@ -1,10 +1,7 @@
 package com.example.attraction_service.advice;
 
 import com.example.attraction_service.dto.response.ErrorResponse;
-import com.example.attraction_service.exception.AttractionAlreadyExistsException;
-import com.example.attraction_service.exception.LocalityAlreadyExistsException;
-import com.example.attraction_service.exception.NoSuchAttractionException;
-import com.example.attraction_service.exception.NoSuchAttractionTypeException;
+import com.example.attraction_service.exception.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +56,13 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
+
+    @ExceptionHandler(InvalidSortParameterException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidSortParameterException(InvalidSortParameterException e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {

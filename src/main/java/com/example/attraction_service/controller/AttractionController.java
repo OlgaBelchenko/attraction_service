@@ -6,11 +6,11 @@ import com.example.attraction_service.dto.request.UpdateAttractionDescriptionReq
 import com.example.attraction_service.service.AttractionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,34 +37,53 @@ public class AttractionController {
 
     /**
      * Метод возвращает список всех достопримечательностей.
-     * Есть возможность получить параметры запроса:
-     * @param sortByName - сортировка списка по названию
-     * @param attractionType - фильтрация по переданному типу достопримечательности
+     * <p>
+     * Необязательные параметры запроса:
+     *
+     * @param attractionType - фильтрация по переданному типу достопримечательности, по умолчанию без фильтрации
+     * @param sort           - параметр для сортировки, по умолчанию сортируется по названию достопримечательности
+     * @param page           - номер страницы для пагинации, иначе задается сервисом по умолчанию
+     * @param size           - количество записей на странице, иначе задается сервисом по умолчанию
      */
     @GetMapping("/list")
-    ResponseEntity<List<AttractionDto>> getAllAttractions(
-            @RequestParam("sort") Optional<Boolean> sortByName,
-            @RequestParam("type") Optional<String> attractionType) {
-        return ResponseEntity.ok(attractionService.getAllAttractions(sortByName, attractionType));
+    public ResponseEntity<Page<AttractionDto>> getAllAttractions(
+            @RequestParam("type") Optional<String> attractionType,
+            @RequestParam("sort") Optional<String> sort,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size
+    ) {
+        return ResponseEntity.ok(attractionService.getAllAttractions(attractionType, sort, page, size));
     }
 
     /**
      * Метод возвращает список достопримечательностей по переданного с front местоположения.
+     * <p>
+     * Параметры ссылки:
+     *
      * @param region - регион местоположения
-     * @param name - название местоположения
+     * @param name   - название местоположения
+     *               <p>
+     *               Необязательные параметры:
+     * @param page   - номер страницы для пагинации, иначе задается сервисом по умолчанию
+     * @param size   - количество записей на странице, иначе задается сервисом по умолчанию
      */
     @GetMapping("/{region}/{name}")
-    ResponseEntity<List<AttractionDto>> getAllAttractionsByLocality(@PathVariable String region, @PathVariable String name) {
+    ResponseEntity<Page<AttractionDto>> getAllAttractionsByLocality(
+            @PathVariable String region,
+            @PathVariable String name,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size
+    ) {
         if (region == null || name == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         LocalityDto localityDto = new LocalityDto(region, name);
-        ;
-        return ResponseEntity.ok(attractionService.getAllAttractionsByLocality(localityDto));
+        return ResponseEntity.ok(attractionService.getAllAttractionsByLocality(localityDto, page, size));
     }
 
     /**
      * Обновление краткого описания достопримечательности.
+     *
      * @param updateRequest содержит название достопримечательности и новое краткое описание.
      */
     @PutMapping("/update")

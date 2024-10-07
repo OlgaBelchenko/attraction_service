@@ -10,6 +10,7 @@ public final class DefaultErrorMessages {
     public static final String NO_SUCH_ATTRACTION_TYPE = "Тип достопримечательности %s не найден!";
     public static final String ATTRACTION_ALREADY_EXISTS = "Достопримечательность с названием %s уже существует!";
     public static final String LOCALITY_ALREADY_EXISTS = "Местоположение с названием %s уже существует!";
+    public static final String INVALID_SORT_PARAMETER = "Некорректный параметр для сортировки: %s!";
 
     private DefaultErrorMessages() {
         // Приватный конструктор для невозможности создания объекта утилитарного класса

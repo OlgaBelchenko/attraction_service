@@ -14,20 +14,12 @@ import java.util.Optional;
 public interface LocalityRepository extends JpaRepository<Locality, Long> {
 
     /**
-     * Метод для проверки существования местоположения в базе данных с переданными названием и регионом.
+     * Метод для поиска местоположения в базе данных с переданными названием и регионом,
+     * независимо от регистра.
      *
      * @param name - название местоположения для поиска в базе данных
      * @param region - регион местоположения для поиска в базе данных
-     * @return возвращает true, если такое местоположение существует, false - если не существует
+     * @return возвращает список местоположений в соответствии с заданными параметрами
      */
-    boolean existsByNameAndRegion(String name, String region);
-
-    /**
-     * Метод для проверки существования местоположения в базе данных с переданными названием и регионом.
-     *
-     * @param name - название местоположения для поиска в базе данных
-     * @param region - регион местоположения для поиска в базе данных
-     * @return возвращает true, если такое местоположение существует, false - если не существует
-     */
-    Optional<Locality> findByNameAndRegion(String name, String region);
+    Optional<Locality> findByNameAndRegionIgnoreCase(String name, String region);
 }
