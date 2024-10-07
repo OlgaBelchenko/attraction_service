@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.lang.reflect.Field;
@@ -26,6 +27,8 @@ import java.util.NoSuchElementException;
  * handleAttractionAlreadyExistsException - обрабатывает исключение {@link AttractionAlreadyExistsException}
  * handleLocalityAlreadyExistsException - обрабатывает исключение {@link LocalityAlreadyExistsException}
  * handleNoSuchElementException - обрабатывает исключение {@link NoSuchElementException}
+ * handleNoSuchLocalityException - обрабатывает исключение {@link NoSuchLocalityException}
+ * handleInvalidSortParameterException - обрабатывает исключение {@link InvalidSortParameterException}
  * handleValidationExceptions - обрабатывает исключение {@link MethodArgumentNotValidException} и возвращает информацию об ошибках валидации
  */
 
@@ -33,38 +36,48 @@ import java.util.NoSuchElementException;
 public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(NoSuchAttractionTypeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleNoSuchAttractionTypeException(NoSuchAttractionTypeException e) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NoSuchAttractionException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleNoSuchAttractionException(NoSuchAttractionException e) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(AttractionAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleAttractionAlreadyExistsException(AttractionAlreadyExistsException e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(LocalityAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleLocalityAlreadyExistsException(LocalityAlreadyExistsException e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleNoSuchElementException(NoSuchElementException e) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+    }
+    @ExceptionHandler(NoSuchLocalityException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handleNoSuchLocalityException(NoSuchLocalityException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(InvalidSortParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleInvalidSortParameterException(InvalidSortParameterException e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
-
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Object dto = ex.getBindingResult().getTarget();
         if (dto == null) {
@@ -83,9 +96,8 @@ public class ExceptionHandlerAdvice {
             }
         });
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(errors);
     }
-
 
     private String getJsonFieldName(Object dto, String fieldName) {
         try {

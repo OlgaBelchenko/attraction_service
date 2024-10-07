@@ -21,5 +21,5 @@ public interface LocalityRepository extends JpaRepository<Locality, Long> {
      * @param region - регион местоположения для поиска в базе данных
      * @return возвращает список местоположений в соответствии с заданными параметрами
      */
-    Optional<Locality> findByNameAndRegionIgnoreCase(String name, String region);
+    Optional<Locality> findByNameIgnoreCaseAndRegionIgnoreCase(String name, String region);
 }

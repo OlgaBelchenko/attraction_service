@@ -3,7 +3,14 @@ package com.example.attraction_service.controller;
 import com.example.attraction_service.dto.AttractionDto;
 import com.example.attraction_service.dto.LocalityDto;
 import com.example.attraction_service.dto.request.UpdateAttractionDescriptionRequest;
+import com.example.attraction_service.dto.response.ErrorResponse;
 import com.example.attraction_service.service.AttractionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,14 +28,23 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Достопримечательность", description = "Создание, изменение, удаление, просмотр достопримечательностей")
 @RequestMapping("/api/attraction")
 public class AttractionController {
 
     private final AttractionService attractionService;
 
     /**
-     * Добавление новой достопримечательности.
+     * Создание новой достопримечательности.
      */
+    @Operation(summary = "Создание новой достопримечательности.",
+            description = "Создает новую достопримечательность в базе данных.\n" +
+                    "В тело запроса передается объект класса AttractionDto.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Успешное создание достопримечательности"),
+            @ApiResponse(responseCode = "400", description = "Ошибка входных данных",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @PostMapping("/add")
     ResponseEntity<Void> addAttraction(@RequestBody AttractionDto attractionDto) {
         attractionService.addAttraction(attractionDto);
@@ -36,7 +52,7 @@ public class AttractionController {
     }
 
     /**
-     * Метод возвращает список всех достопримечательностей.
+     * Метод возвращает список достопримечательностей.
      * <p>
      * Необязательные параметры запроса:
      *
@@ -45,6 +61,21 @@ public class AttractionController {
      * @param page           - номер страницы для пагинации, иначе задается сервисом по умолчанию
      * @param size           - количество записей на странице, иначе задается сервисом по умолчанию
      */
+    @Operation(summary = "Список достопримечательностей.",
+            description = """
+                    Возвращает список достопримечательностей.\n
+                    В качестве параметров запроса можно передать:\n
+                        "type" - тип достопримечательности, по которому будет отфильтрован список (допустимые значения: CASTLE, PARK, MUSEUM, RESERVE, ARCHAEOLOGICAL_SITE;\n
+                        "sort" - поле для сортировки списка, по умолчанию список будет отсортирован по названию достопримечательности;\n
+                        "page" - номер страницы для пагинации;\n
+                        "size" - количество записей на странице.""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Успешное получение списка достопримечательностей"),
+            @ApiResponse(responseCode = "400", description = "Ошибка входных данных",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Не найден тип достопримечательности",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/list")
     public ResponseEntity<Page<AttractionDto>> getAllAttractions(
             @RequestParam("type") Optional<String> attractionType,
@@ -67,6 +98,22 @@ public class AttractionController {
      * @param page   - номер страницы для пагинации, иначе задается сервисом по умолчанию
      * @param size   - количество записей на странице, иначе задается сервисом по умолчанию
      */
+    @Operation(summary = "Список достопримечательностей в определенном местоположении.",
+            description = """
+                    Возвращает список достопримечательностей.\n
+                    Местоположение задается параметрами ссылки:\n
+                        {region} - регион местоположения;\n
+                        {name} - название местоположения.\n
+                    В качестве параметров запроса можно передать:\n
+                        "page" - номер страницы для пагинации;\n
+                        "size" - количество записей на странице.""")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Успешное получение списка достопримечательностей"),
+            @ApiResponse(responseCode = "400", description = "Ошибка входных данных",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Не найдено местоположение",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/{region}/{name}")
     ResponseEntity<Page<AttractionDto>> getAllAttractionsByLocality(
             @PathVariable String region,
@@ -86,6 +133,16 @@ public class AttractionController {
      *
      * @param updateRequest содержит название достопримечательности и новое краткое описание.
      */
+    @Operation(summary = "Обновление краткого описания достопримечательности.",
+            description = "Обновляет краткое описание достопримечательности.\n" +
+                    "В тело запроса передается объект класса UpdateAttractionDescriptionRequest.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Успешное обновление достопримечательности"),
+            @ApiResponse(responseCode = "400", description = "Ошибка входных данных",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Не найдена достопримечательность",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @PutMapping("/update")
     ResponseEntity<Void> updateAttraction(@RequestBody @Valid UpdateAttractionDescriptionRequest updateRequest) {
         attractionService.updateAttractionDescription(updateRequest);
@@ -95,6 +152,15 @@ public class AttractionController {
     /**
      * Удаление достопримечательности по переданному названию.
      */
+    @Operation(summary = "Удаление достопримечательности.",
+            description = "Удаляет достопримечательность по переданному названию.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Успешное удаление достопримечательности"),
+            @ApiResponse(responseCode = "400", description = "Ошибка входных данных",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Не найдена достопримечательность",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @DeleteMapping("/delete")
     ResponseEntity<Void> deleteAttraction(@RequestBody String name) {
         attractionService.deleteAttraction(name);

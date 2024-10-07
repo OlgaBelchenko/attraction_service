@@ -9,10 +9,7 @@ import com.example.attraction_service.entity.Assistance;
 import com.example.attraction_service.entity.Attraction;
 import com.example.attraction_service.entity.AttractionType;
 import com.example.attraction_service.entity.Locality;
-import com.example.attraction_service.exception.AttractionAlreadyExistsException;
-import com.example.attraction_service.exception.InvalidSortParameterException;
-import com.example.attraction_service.exception.NoSuchAttractionException;
-import com.example.attraction_service.exception.NoSuchAttractionTypeException;
+import com.example.attraction_service.exception.*;
 import com.example.attraction_service.repository.AssistanceRepository;
 import com.example.attraction_service.repository.AttractionRepository;
 import com.example.attraction_service.repository.LocalityRepository;
@@ -87,7 +84,7 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
     private Locality getLocality(LocalityDto localityDto) {
-        Locality locality = localityRepository.findByNameAndRegionIgnoreCase(
+        Locality locality = localityRepository.findByNameIgnoreCaseAndRegionIgnoreCase(
                 localityDto.name(), localityDto.region()).orElse(null);
         if (locality == null) {
             locality = LocalityMapper.mapToLocality(localityDto);
@@ -161,12 +158,10 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public Page<AttractionDto> getAllAttractionsByLocality(LocalityDto localityDto, Optional<Integer> page, Optional<Integer> size) {
         Locality locality = LocalityMapper.mapToLocality(localityDto);
-        Locality existingLocality = localityRepository.findByNameAndRegionIgnoreCase(locality.getName(), locality.getRegion()).orElse(null);
-        if (existingLocality != null) {
-            locality = existingLocality;
-        } else {
-            locality = localityRepository.save(locality);
-        }
+        locality = localityRepository.findByNameIgnoreCaseAndRegionIgnoreCase(locality.getName(), locality.getRegion()).orElseThrow(
+                () -> new NoSuchLocalityException(String.format(NO_SUCH_LOCALITY, localityDto.region() + ", " + localityDto.name()))
+        );
+
         return attractionRepository.findByLocality(locality, getPageable(page, size)).map(AttractionMapper::mapToAttractionDto);
     }
 
