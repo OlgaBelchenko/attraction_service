@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Import;
 @SpringBootTest
 class AttractionServiceImplApplicationTests {
 
+    // todo
+
     @Test
     void contextLoads() {
     }

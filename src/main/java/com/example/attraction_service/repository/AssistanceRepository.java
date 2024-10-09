@@ -20,6 +20,5 @@ public interface AssistanceRepository extends JpaRepository<Assistance, Long> {
      * @param executor - исполнитель
      * @return возвращает Optional<Assistance>
      */
-
     Optional<Assistance> findByAssistanceTypeAndExecutor(AssistanceType assistanceType, String executor);
 }
