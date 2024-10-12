@@ -13,13 +13,13 @@ import jakarta.validation.constraints.NotNull;
  */
 
 public record LocalityDto(
-        @Schema(description = "Название местоположения", defaultValue = "Санкт-Петербург")
+        @Schema(description = "Название местоположения", defaultValue = "Екатеринбург")
         @NotBlank
         @NotNull
         @JsonProperty("name")
         String name,
 
-        @Schema(description = "Регион", defaultValue = "Ленинградская область")
+        @Schema(description = "Регион", defaultValue = "Свердловская область")
         @NotNull
         @NotBlank
         @JsonProperty("region")

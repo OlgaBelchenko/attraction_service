@@ -52,6 +52,11 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public void addAttraction(AttractionDto attractionDto) {
         Attraction attraction;
+        AttractionType attractionType = getAttractionType(Optional.of(attractionDto.attractionType()));
+        if (attractionType == null) {
+            throw new NoSuchAttractionTypeException(String.format(NO_SUCH_ATTRACTION_TYPE, "null"));
+        }
+
         attraction = AttractionMapper.mapToAttraction(attractionDto);
 
         if (attractionRepository.existsByName(attraction.getName()))

@@ -64,7 +64,7 @@ class AttractionControllerIT {
 
     @Test
     @SneakyThrows
-    void addAttraction_success_returnsOk() {
+    void testAddAttraction_success_returnsOk() {
         mockMvc.perform(post("/api/attraction/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"attraction\", \"description\": \"description\", \"attraction_type\": \"CASTLE\", \"locality\": {\"region\": \"region\", \"name\": \"locality\"}}"))
@@ -73,7 +73,7 @@ class AttractionControllerIT {
 
     @Test
     @SneakyThrows
-    void addAttraction_attractionAlreadyExists_returnsBadRequest() {
+    void testAddAttraction_attractionAlreadyExists_returnsBadRequest() {
         Locality locality = Locality.builder().name("locality").region("region").build();
         localityRepository.save(locality);
         Attraction attraction = Attraction.builder()
@@ -91,7 +91,7 @@ class AttractionControllerIT {
 
     @Test
     @SneakyThrows
-    void getAllAttractions_success_returnsOk() {
+    void testGetAllAttractions_success_returnsOk() {
         mockMvc.perform(get("/api/attraction/list")
                         .param("type", "CASTLE")
                         .param("sort", "name")
@@ -102,7 +102,7 @@ class AttractionControllerIT {
 
     @Test
     @SneakyThrows
-    void updateAttraction_success_returnsNoContent() {
+    void testUpdateAttraction_success_returnsNoContent() {
         Locality locality = Locality.builder().name("locality").region("region").build();
         localityRepository.save(locality);
         Attraction attraction = Attraction.builder()
@@ -121,7 +121,7 @@ class AttractionControllerIT {
 
     @Test
     @SneakyThrows
-    void updateAttraction_attractionNotFound_returnsNotFound() {
+    void testUpdateAttraction_attractionNotFound_returnsNotFound() {
         mockMvc.perform(put("/api/attraction/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"attraction\", \"description\": \"new description\"}"))
@@ -130,7 +130,7 @@ class AttractionControllerIT {
 
     @Test
     @SneakyThrows
-    void deleteAttraction_success_returnsNoContent() {
+    void testDeleteAttraction_success_returnsNoContent() {
         Locality locality = Locality.builder().name("locality").region("region").build();
         localityRepository.save(locality);
         Attraction attraction = Attraction.builder()
@@ -149,7 +149,7 @@ class AttractionControllerIT {
 
     @Test
     @SneakyThrows
-    void deleteAttraction_attractionNotFound_returnsNotFound() {
+    void testDeleteAttraction_attractionNotFound_returnsNotFound() {
         mockMvc.perform(delete("/api/attraction/delete")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content("attraction"))

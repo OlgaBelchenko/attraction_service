@@ -101,9 +101,9 @@ public class AttractionController {
     @Operation(summary = "Список достопримечательностей в определенном местоположении.",
             description = """
                     Возвращает список достопримечательностей.<br>
-                    Местоположение задается параметрами ссылки:<br>
-                        {region} - регион местоположения;<br>
-                        {name} - название местоположения.<br>
+                    Местоположение задается обязательными параметрами запроса:<br>
+                        region - регион местоположения;<br>
+                        name - название местоположения.<br>
                     В качестве параметров запроса можно передать:<br>
                         "page" - номер страницы для пагинации;<br>
                         "size" - количество записей на странице.""")
@@ -114,10 +114,10 @@ public class AttractionController {
             @ApiResponse(responseCode = "404", description = "Не найдено местоположение",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/{region}/{name}")
+    @GetMapping("/list/locality")
     ResponseEntity<Page<AttractionDto>> getAllAttractionsByLocality(
-            @PathVariable String region,
-            @PathVariable String name,
+            @RequestParam("region") String region,
+            @RequestParam("name") String name,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size
     ) {

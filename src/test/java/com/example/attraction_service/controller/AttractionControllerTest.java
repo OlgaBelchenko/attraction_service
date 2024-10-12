@@ -91,7 +91,9 @@ class AttractionControllerTest {
         ));
         when(attractionService.getAllAttractionsByLocality(any(), any(), any())).thenReturn(attractions);
 
-        mockMvc.perform(get("/api/attraction/{region}/{name}", region, name))
+        mockMvc.perform(get("/api/attraction/list/locality")
+                        .param("region", region)
+                        .param("name", name))
                 .andExpect(status().isOk())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content.length()").value(2));

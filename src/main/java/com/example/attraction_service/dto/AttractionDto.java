@@ -23,7 +23,7 @@ import java.util.List;
 
 @Builder
 public record AttractionDto(
-        @Schema(description = "Название достопримечательности", defaultValue = "Государственный эрмитаж")
+        @Schema(description = "Название достопримечательности", defaultValue = "Исторический сквер")
         @NotNull
         @NotBlank
         @JsonProperty("name")
@@ -34,11 +34,11 @@ public record AttractionDto(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         Date created,
 
-        @Schema(description = "Краткое описание достопримечательности", defaultValue = "Российский государственный художественный музей в Санкт-Петербурге")
+        @Schema(description = "Краткое описание достопримечательности", defaultValue = "Исторический сквер в центре Екатеринбурга")
         @JsonProperty("description")
         String description,
 
-        @Schema(description = "Тип достопримечательности", allowableValues = "CASTLE, PARK, MUSEUM, RESERVE, ARCHAEOLOGICAL_SITE", defaultValue = "MUSEUM")
+        @Schema(description = "Тип достопримечательности", allowableValues = "CASTLE, PARK, MUSEUM, RESERVE, ARCHAEOLOGICAL_SITE", defaultValue = "PARK")
         @NotNull
         @NotBlank
         @JsonProperty("attraction_type")

@@ -62,7 +62,7 @@ class LocalityControllerIT {
 
     @Test
     @SneakyThrows
-    void addLocality_success_returnsOK() {
+    void testAddLocality_success_returnsOK() {
         mockMvc.perform(post("/api/locality/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"name\", \"region\": \"region\"}"))
@@ -71,7 +71,7 @@ class LocalityControllerIT {
 
     @Test
     @SneakyThrows
-    void addLocality_localityAlreadyExists_returnsBadRequest() {
+    void testAddLocality_localityAlreadyExists_returnsBadRequest() {
         Locality locality = Locality.builder().name("locality").region("region").build();
         localityRepository.save(locality);
 
