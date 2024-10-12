@@ -55,7 +55,7 @@ public class AttractionServiceImpl implements AttractionService {
         attraction = AttractionMapper.mapToAttraction(attractionDto);
 
         if (attractionRepository.existsByName(attraction.getName()))
-            throw new AttractionAlreadyExistsException(String.format(ATTRACTION_ALREADY_EXISTS, attraction.getName()));
+            throw new AttractionAlreadyExistsException(String.format(ATTRACTION_ALREADY_EXISTS, attractionDto.name()));
 
         attraction.setLocality(getLocality(attractionDto.locality()));
 

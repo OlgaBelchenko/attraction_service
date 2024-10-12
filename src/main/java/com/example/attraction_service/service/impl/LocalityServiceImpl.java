@@ -27,7 +27,7 @@ public class LocalityServiceImpl implements LocalityService {
     public void addLocality(LocalityDto localityDto) {
         Locality locality = localityRepository.findByNameIgnoreCaseAndRegionIgnoreCase(localityDto.name(), localityDto.region()).orElse(null);
         if (locality != null) {
-            throw new LocalityAlreadyExistsException(String.format(LOCALITY_ALREADY_EXISTS, locality.getName()));
+            throw new LocalityAlreadyExistsException(String.format(LOCALITY_ALREADY_EXISTS, localityDto.name()));
         }
         locality = LocalityMapper.mapToLocality(localityDto);
         localityRepository.save(locality);

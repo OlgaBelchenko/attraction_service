@@ -1,10 +1,11 @@
 package com.example.attraction_service.aspect;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-@Slf4j
+@RequiredArgsConstructor
 public class LoggingAspect {
+
+    private final Logger log;
 
     /**
      * Метод для декларации пойнткатов в аннотации.

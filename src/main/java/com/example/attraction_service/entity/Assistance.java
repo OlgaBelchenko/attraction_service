@@ -21,8 +21,7 @@ import java.util.List;
 @Table(uniqueConstraints={
         @UniqueConstraint(columnNames = {"assistance_type", "executor"})
 })
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

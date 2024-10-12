@@ -1,10 +1,7 @@
 package com.example.attraction_service.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Сущность "Услуга-Достопримечательность" (AssistanceAttraction).
@@ -17,8 +14,7 @@ import lombok.Setter;
  */
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AssistanceAttraction {

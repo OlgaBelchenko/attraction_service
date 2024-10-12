@@ -22,7 +22,7 @@ CREATE TABLE attraction
 (
     id              BIGSERIAL PRIMARY KEY NOT NULL,
     name            VARCHAR(50)           NOT NULL,
-    created         TIMESTAMP             NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created         TIMESTAMP             DEFAULT CURRENT_TIMESTAMP,
     description     VARCHAR(255),
     attraction_type VARCHAR(50)           NOT NULL,
     locality_id     BIGSERIAL,

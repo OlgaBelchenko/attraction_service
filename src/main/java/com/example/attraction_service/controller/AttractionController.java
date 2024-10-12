@@ -46,7 +46,7 @@ public class AttractionController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/add")
-    ResponseEntity<Void> addAttraction(@RequestBody AttractionDto attractionDto) {
+    ResponseEntity<Void> addAttraction(@RequestBody @Valid AttractionDto attractionDto) {
         attractionService.addAttraction(attractionDto);
         return ResponseEntity.ok().build();
     }
@@ -63,11 +63,11 @@ public class AttractionController {
      */
     @Operation(summary = "Список достопримечательностей.",
             description = """
-                    Возвращает список достопримечательностей.\n
-                    В качестве параметров запроса можно передать:\n
-                        "type" - тип достопримечательности, по которому будет отфильтрован список (допустимые значения: CASTLE, PARK, MUSEUM, RESERVE, ARCHAEOLOGICAL_SITE;\n
-                        "sort" - поле для сортировки списка, по умолчанию список будет отсортирован по названию достопримечательности;\n
-                        "page" - номер страницы для пагинации;\n
+                    Возвращает список достопримечательностей.<br>
+                    В качестве параметров запроса можно передать:<br>
+                        "type" - тип достопримечательности, по которому будет отфильтрован список (допустимые значения: CASTLE, PARK, MUSEUM, RESERVE, ARCHAEOLOGICAL_SITE;<br>
+                        "sort" - поле для сортировки списка, по умолчанию список будет отсортирован по названию достопримечательности;<br>
+                        "page" - номер страницы для пагинации;<br>
                         "size" - количество записей на странице.""")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Успешное получение списка достопримечательностей"),
@@ -100,12 +100,12 @@ public class AttractionController {
      */
     @Operation(summary = "Список достопримечательностей в определенном местоположении.",
             description = """
-                    Возвращает список достопримечательностей.\n
-                    Местоположение задается параметрами ссылки:\n
-                        {region} - регион местоположения;\n
-                        {name} - название местоположения.\n
-                    В качестве параметров запроса можно передать:\n
-                        "page" - номер страницы для пагинации;\n
+                    Возвращает список достопримечательностей.<br>
+                    Местоположение задается параметрами ссылки:<br>
+                        {region} - регион местоположения;<br>
+                        {name} - название местоположения.<br>
+                    В качестве параметров запроса можно передать:<br>
+                        "page" - номер страницы для пагинации;<br>
                         "size" - количество записей на странице.""")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Успешное получение списка достопримечательностей"),
